@@ -34,6 +34,7 @@ private:
     std::string type;
     int healthPoints;
     int maxHealthPoints;
+    int inPokeball; // 0 = not in pokeball, 1 = in pokeball
 
 public:
     Pokemon(){};
@@ -42,14 +43,31 @@ public:
     Pokemon(std::string name, std::string type, int healthPoints)
         : name(name), type(type), healthPoints(healthPoints) {
             this->maxHealthPoints = healthPoints;
+            this->inPokeball = 0;
             pokemons.push_back(this);
         }
 
     void print()
     {
         std::cout << "Name: " << name << std::endl;
-        std::cout << "Type: " << type << std::endl;
         std::cout << "Health Points: " << healthPoints << std::endl;
+        if(inPokeball == 0){
+            std::cout << "Pokemon out of Pokeball" << std::endl;
+        } else{
+            std::cout << "Pokemon in Pokeball" << std::endl;
+        }
+    }
+
+    int getInPokeball(){
+        return inPokeball;
+    }
+
+    void setInPokeball(int inPokeball){
+        this->inPokeball = inPokeball;
+    }
+
+    void printName(){
+        std::cout << name << std::endl;
     }
 
     std::string getType(){
@@ -265,13 +283,23 @@ class Equip{
 };
 
 
-void select_pokemons(){
-    std::string pokemon;\
+// void select_pokemons(){
+//     std::string pokemon;\
 
-    if(game->getAttackerIndex() == 1){
-        while
-         std::cout << "\nPlayer1 select pokemons:\n-----------------------" << std::endl;
-    //printAvailableWizards();
-    std::getline(std::cin, pokemon);
+//     if(game->getAttackerIndex() == 1){
+//         while
+//         std::cout << "\nPlayer1 select pokemons:\n-----------------------" << std::endl;
+//     //printAvailableWizards();
+//     std::getline(std::cin, pokemon);
+//     }
+// }
+
+void printPokemons(){
+    for (auto& p : pokemons) {
+        p->printName();
     }
+}
 
+void printPokemonInfo(Pokemon *pokemon){
+    pokemon->print();
+}
