@@ -25,15 +25,15 @@
 #define HP healthPoints
 
 
-#define GET_NAME(pokemon) searchPokemon(pokemon)->name
+#define GET_NAME(pokemon) searchPokemon(pokemon)->getName();
 #define GET_TYPE(pokemon) searchPokemon(pokemon)->type
 #define GET_HP(pokemon) searchPokemon(pokemon)->healthPoints
 
 
 #define IS_IN_POKEBALL(pokemon) 
 #define POKEBALL
-#define ATTACKER
-#define DEFENDER
+#define ATTACKER +
+#define DEFENDER +
 #define DAMAGE ; damage = 
 #define HEAL ; heal =
 #define START {

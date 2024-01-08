@@ -16,6 +16,16 @@ std::vector<Ability *> abilities;
 std::vector<Pokemon *> pokemonsInGame;
 
 
+Pokemon *searchPokemon(Pokemon *x){
+    for (auto& p : pokemons) {
+            if (p == x) {
+                return p;
+            }
+        }
+    return nullptr; // Return nullptr if Pokemon is not found
+}
+
+
 class Pokemon
 {
 private:
@@ -43,6 +53,10 @@ public:
 
     std::string getType(){
         return type;
+    }
+
+    std::string getName(){
+        return name;
     }
 
     int getMaxHealthPoints(){
@@ -77,8 +91,7 @@ public:
         return arr[0];
     }
 };
-
-
+    
 class Ability
 {
 private:
@@ -234,5 +247,12 @@ class Heal{
 };
 
 class Equip{
+    private: Pokemon *pokemon;
+    public:
+        Equip(){}
+        ~Equip(){}
+        Equip(Pokemon *pokemon){
+            this->pokemon = pokemon;
+        }
 
-}
+};
