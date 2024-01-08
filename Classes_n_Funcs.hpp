@@ -45,6 +45,10 @@ public:
             pokemons.push_back(this);
         }
 
+    void printName(){
+        std::cout << name << std::endl;
+    }
+
     void print()
     {
         std::cout << "Name: " << name << std::endl;
@@ -265,13 +269,34 @@ class Equip{
 };
 
 
+Pokemon *searchPokemonName(std::string name){
+    for (auto& p : pokemons) {
+            if (p->getName() == name) {
+                return p;
+            }
+        }
+    return nullptr; // Return nullptr if Pokemon is not found
+}
+
+
 void select_pokemons(){
-    std::string pokemon;\
+    std::string pokemon_name="";
+    Pokemon *pokemon;
 
     if(game->getAttackerIndex() == 1){
-        while
+        while(searchPokemonName(pokemon_name) == nullptr){
          std::cout << "\nPlayer1 select pokemons:\n-----------------------" << std::endl;
-    //printAvailableWizards();
-    std::getline(std::cin, pokemon);
+        //printAvailableWizards();
+        std::getline(std::cin, pokemon_name);
+        }
+    }else{
+        while(searchPokemonName(pokemon_name) == nullptr){
+        std::cout << "\nPlayer2 select pokemons:\n-----------------------" << std::endl;
+        //printAvailableWizards();
+        std::getline(std::cin, pokemon_name);
+        }
     }
+    pokemon = searchPokemonName(pokemon_name);
+    pokemonsInGame.push_back(pokemon);
+}
 

@@ -32,16 +32,16 @@
 
 #define IS_IN_POKEBALL(pokemon) 
 #define POKEBALL
-#define ATTACKER ,
-#define DEFENDER ,
+#define ATTACKER pokemonsInGame.at(game->getAttackerIndex()),
+#define DEFENDER pokemonsInGame.at(game->getDefenderIndex()),
 #define DAMAGE ; damage = 
 #define HEAL ; heal =
 #define START {
 #define END }
 #define ACTION
-#define IF
-#define ELSE_IF
-#define ELSE
+#define IF 
+#define ELSE_IF 
+#define ELSE  
 #define DO
 #define FOR
 #define ROUNDS
