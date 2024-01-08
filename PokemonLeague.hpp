@@ -32,8 +32,8 @@
 
 #define IS_IN_POKEBALL(pokemon) 
 #define POKEBALL
-#define ATTACKER +
-#define DEFENDER +
+#define ATTACKER ,
+#define DEFENDER ,
 #define DAMAGE ; damage = 
 #define HEAL ; heal =
 #define START {

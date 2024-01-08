@@ -11,6 +11,7 @@ class Damage;
 class Heal;
 class Equip;
 
+std::vector<void (*)()> actions;
 std::vector<Pokemon *> pokemons;
 std::vector<Ability *> abilities;
 std::vector<Pokemon *> pokemonsInGame;
@@ -81,6 +82,8 @@ public:
         } 
     }
 };
+
+
 
 
 class Pokemons
@@ -161,8 +164,8 @@ class Round{
         }
 };
 
-Round *game = new Round;
-
+Round *game = new Round();
+    
 class Damage{
     private:
         int damage;
@@ -179,7 +182,7 @@ class Damage{
             return damage;
         }
 
-        int operator+(int damage){
+        int operator,(int damage){
             //Pokemon *attacker = Players.at(game->getAttackerIndex());
             //do_damage(defender,attacker,damage);
             return 0;
@@ -242,7 +245,7 @@ class Heal{
             return heal;
         }
 
-        int operator+(int heal){
+        int operator,(int heal){
             pokemon.heal(getHeal());
             return 0;
         }
