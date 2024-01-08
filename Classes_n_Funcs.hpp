@@ -165,7 +165,7 @@ class Round{
 };
 
 Round *game = new Round();
-    
+
 class Damage{
     private:
         int damage;
@@ -263,3 +263,15 @@ class Equip{
         }
 
 };
+
+
+void select_pokemons(){
+    std::string pokemon;\
+
+    if(game->getAttackerIndex() == 1){
+        while
+         std::cout << "\nPlayer1 select pokemons:\n-----------------------" << std::endl;
+    //printAvailableWizards();
+    std::getline(std::cin, pokemon);
+    }
+
