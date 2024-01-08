@@ -59,6 +59,10 @@ public:
         return name;
     }
 
+    int getHealth(){
+        return healthPoints;
+    }
+
     int getMaxHealthPoints(){
         return maxHealthPoints;
     }

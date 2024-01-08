@@ -26,8 +26,8 @@
 
 
 #define GET_NAME(pokemon) searchPokemon(pokemon)->getName();
-#define GET_TYPE(pokemon) searchPokemon(pokemon)->type
-#define GET_HP(pokemon) searchPokemon(pokemon)->healthPoints
+#define GET_TYPE(pokemon) searchPokemon(pokemon)->getType();
+#define GET_HP(pokemon) searchPokemon(pokemon)->getHealth();
 
 
 #define IS_IN_POKEBALL(pokemon) 
