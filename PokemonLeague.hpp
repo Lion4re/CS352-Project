@@ -25,19 +25,22 @@
 #define HP healthPoints
 
 
-#define GET_NAME(pokemon) searchPokemon(pokemon)->getName();
-#define GET_TYPE(pokemon) searchPokemon(pokemon)->getType();
-#define GET_HP(pokemon) searchPokemon(pokemon)->getHealth();
+#define GET_NAME(pokemon) searchPokemon(pokemon 0)->getName();
+#define GET_TYPE(pokemon) searchPokemon(pokemon 1)->getType();
+#define GET_HP(pokemon) searchPokemon(pokemon 2)->getHealth();
+#define IS_IN_POKEBALL(pokemon) searchPokemon(pokemon 3)->getInPokeball();
 
 
-#define IS_IN_POKEBALL(pokemon) 
+
 #define POKEBALL
-#define ATTACKER pokemonsInGame.at(game->getAttackerIndex()),
-#define DEFENDER pokemonsInGame.at(game->getDefenderIndex()),
+#define ATTACKER pokemonsInGame[game->getAttackerIndex()],
+#define DEFENDER pokemonsInGame[game->getDefenderIndex()],
 #define DAMAGE ; damage = 
 #define HEAL ; heal =
-#define START {
-#define END }
+#define START []() {
+#define END ; }
+
+
 #define ACTION
 
 
@@ -50,9 +53,13 @@
 #define FOR
 #define ROUNDS
 #define AFTER
-#define SHOW
+#define SHOW ; std::cout << std::endl <<
 #define DEAR
-#define LEARN
+#define LEARN ; pokemon_learn = find_wizard(
+
+
 #define ABILITY_NAME(ability_name)
-#define DUEL
+
+
+#define DUEL ; duel();
 

@@ -10,21 +10,14 @@ class Round;
 class Damage;
 class Heal;
 class Equip;
+class Pokeball;
+class Take;
 
 std::vector<void (*)()> actions;
 std::vector<Pokemon *> pokemons;
 std::vector<Ability *> abilities;
+std::vector<void (*)()> actions;
 Pokemon* pokemonsInGame[2] = {nullptr, nullptr};
-
-
-Pokemon *searchPokemon(Pokemon *x){
-    for (auto& p : pokemons) {
-            if (p == x) {
-                return p;
-            }
-        }
-    return nullptr; // Return nullptr if Pokemon is not found
-}
 
 
 class Pokemon
@@ -35,8 +28,10 @@ private:
     int healthPoints;
     int maxHealthPoints;
     int inPokeball; // 0 = not in pokeball, 1 = in pokeball
-
+    std::vector<Ability *> abilities;
+    
 public:
+
     Pokemon(){};
     ~Pokemon(){};
 
@@ -86,6 +81,10 @@ public:
         return maxHealthPoints;
     }
 
+    std::vector<Ability *> getAbilities(){
+        return abilities;
+    }
+
     void receiveDamage(int damage){
         healthPoints -= damage;
         if(healthPoints < 0){
@@ -99,9 +98,36 @@ public:
                 healthPoints = maxHealthPoints;
         } 
     }
+
+    bool check()
+    {
+        if (game->getRound() % 3 == 0)
+        { // perritos
+            return true;
+        }
+        else
+        { // artios
+            return false;
+        }
+    }
+
+    void update()
+    {
+        if (this->getType() == "Grass" && !check())
+        {
+             this->heal(static_cast<int>(this->getMaxHealthPoints() * 0.05f));
+        }
+    }
+    
+    bool isAlive(){
+        if(healthPoints > 0){
+            return true;
+        } else{
+            return false;
+        }
+    }
+
 };
-
-
 
 
 class Pokemons
@@ -121,19 +147,35 @@ class Ability
 {
 private:
     std::string name;
+    void (*action)();
 public:
     Ability(){};
     ~Ability(){};
 
-    Ability(std::string name)
-        : name(name) {
+    Ability(std::string name,void (*action)())
+        : name(name), action(action) {
             abilities.push_back(this);
         }
 
-    void print()
-    {
-        std::cout << "Name: " << name << std::endl;
+    Ability(std::string name) {
+        this->name = "--ABILITY_WITH_NO_NAME--";
+        abilities.push_back(this);
+    };
+
+    void make_action(){
+        return action();
     }
+
+    std::string getSpellName()
+    {
+        return name;
+    }
+
+    std::string printer(){
+        return "Ability name: " + name + "\n";
+    }
+
+    Ability *operator,(Ability *prev_Ability);
 };
 
 class Abilities
@@ -201,40 +243,38 @@ class Damage{
         }
 
         int operator,(int damage){
-            //Pokemon *attacker = Players.at(game->getAttackerIndex());
-            //do_damage(defender,attacker,damage);
+            Pokemon *attacker = pokemonsInGame[(game->getAttackerIndex())];
+            Pokemon *defender = pokemonsInGame[(game->getDefenderIndex())];
+            do_damage(defender,attacker,damage);
             return 0;
         }
 
-        void do_damage(Pokemon defender, Pokemon *attacker, int damage){
+        void do_damage(Pokemon *defender, Pokemon *attacker, int damage){
             float damageMultiplier = 1.0f;
 
         if (attacker->getType() == "Electric") {
-            if (defender.getType() == "Fire") {
+            if (defender->getType() == "Fire") {
                 damageMultiplier -= 0.30f;
-            } else if (defender.getType() != "Electric") {
+            } else if (defender->getType() != "Electric") {
                 damageMultiplier -= 0.20f;
             }
         } else if (attacker->getType() == "Fire") {
-            if (defender.getType() == "Electric") {
+            if (defender->getType() == "Electric") {
                 damageMultiplier += 0.20f;
-            } else if (defender.getType() != "Fire") {
+            } else if (defender->getType() != "Fire") {
                 damageMultiplier += 0.15f;
             }
         } else if (attacker->getType() == "Water") {
             damageMultiplier += 0.07f;
             attacker->receiveDamage(static_cast<int>(getDamage() *(-0.07f)));
         } else if (attacker->getType() == "Grass") {
-            bool isSunny = check();
-            if (isSunny) {
+            if (check()) {
                 damageMultiplier += 0.07f;
-            } else {
-                attacker->heal(static_cast<int>(attacker->getMaxHealthPoints() * 0.05f));
             }
         }
 
         int finalDamage = static_cast<int>(getDamage() * damageMultiplier);
-        defender.receiveDamage(finalDamage);
+        defender->receiveDamage(finalDamage);
     }
 
         bool check(){
@@ -271,14 +311,57 @@ class Heal{
 
 };
 
-class Equip{
+
+class Pokeball{
+    int pokeball_value;
+
+   public:
+    Pokeball() {}
+    Pokeball(int val) : pokeball_value(val) {
+    }
+    ~Pokeball() {
+    }
+
+    Pokeball *operator--() {
+        return this;
+    }
+
+    Pokeball operator-() const {
+        Pokeball o(1);
+        return o;
+    }
+
+    int getPokeballValue() {
+        return pokeball_value;
+    }
+};
+
+class Take{
     private: Pokemon *pokemon;
     public:
-        Equip(){}
-        ~Equip(){}
-        Equip(Pokemon *pokemon){
+        Take(){}
+        ~Take(){}
+        Take(Pokemon *pokemon){
             this->pokemon = pokemon;
         }
+
+     Pokeball *operator,(Pokeball *pokeball) {  // ---o
+        if (pokeball->getPokeballValue() == 1) {
+            pokemon->setInPokeball(1);
+        } else {
+            pokemon->setInPokeball(0);
+        }
+        return pokeball;
+    }
+
+    // PokeBall operator,(Pokeball pokeball) {  //  _
+    //     if (pokeball.getPokeballValue() == 1) {
+    //         pokemon->setInPokeball(1);
+    //     } else {
+    //         pokemon->setInPokeball(0);
+    //     }
+    //     return pokeball;
+    // }
 
 };
 
@@ -287,6 +370,15 @@ Pokemon *searchPokemonName(std::string name){
     for (auto& p : pokemons) {
             if (p->getName() == name) {
                 return p;
+            }
+        }
+    return nullptr; // Return nullptr if Pokemon is not found
+}
+
+Pokemon *searchPokemon(Pokemon *x,int t){
+    for (int i=0; i < 2 ; i++) {
+            if (pokemonsInGame[i] == x) {
+                return pokemonsInGame[i];
             }
         }
     return nullptr; // Return nullptr if Pokemon is not found
@@ -302,7 +394,6 @@ void printPokemonInfo(Pokemon *pokemon){
     pokemon->print();
 }
 
-
 void select_pokemons(int PokemonIndex){
     std::string pokemon_name="";
     Pokemon *pokemon;
@@ -314,9 +405,8 @@ void select_pokemons(int PokemonIndex){
         std::getline(std::cin, pokemon_name);
     }
     pokemon = searchPokemonName(pokemon_name);
-    pokemonsInGame[PokemonIndex] = new Pokemon(*pokemon);
+    pokemonsInGame[PokemonIndex] = pokemon;
 }
-
 
 void duel() {
     std::cout << "------------------------------ POKEMON THE GAME ------------------------------" << std::endl;
@@ -327,5 +417,17 @@ void duel() {
     }
     Pokemon *Pokemon1 = pokemonsInGame[0];
     Pokemon *Pokemon2 = pokemonsInGame[1];
+    //while (Pokemon1->isAlive() && Pokemon2->isAlive()) {
+        //StartNewRound();
+        if (Pokemon1->getInPokeball() == 0) {
+            std::cout << Pokemon1->getName() << "(Player1) select ability:" << std::endl;
+            //spell = player_select_Spell(Player1);
+            //spell->make_action();
+            Pokemon1->print();
+            Pokemon2->print();
+        } else {
+            std::cout << Pokemon1->getName() << "(Player1) has not a pokemon out of pokeball so he can't cast an ability." << std::endl;
+        }
+   //}
 }
 

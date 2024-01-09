@@ -1,29 +1,17 @@
-# Makefile
+all: build run
 
-# Compiler to use
-CXX = g++
+build:
+	@echo "Building hello.cpp.."
+	g++ -std=c++17 -Wall main.cpp Classes_n_Funcs.hpp -o game.out
+run:
+	./game.out
+testc:
+	@echo "Building test.c"
+	gcc -Wall main.cpp -o main.out
 
-# Compiler flags
-CXXFLAGS = -Wall -Wextra -std=c++11
-
-# Name of the output executable
-TARGET = myprogram
-
-# Default target
-all: $(TARGET)
-
-# Link the object files into a binary
-$(TARGET): main.o
-	$(CXX) $(CXXFLAGS) -o $(TARGET) main.o
-
-# Compile the source files into object files
-main.o: main.cpp Classes_n_Funcs.hpp PokemonLeague.hpp
-	$(CXX) $(CXXFLAGS) -c main.cpp
-
-# Clean target
 clean:
-	rm -f *.o $(TARGET)
-
-# Run target
-run: all
-	./$(TARGET)
+	@echo "Cleaning executables.."
+	*.out
+	
+ssh_kiwi:
+	ssh kiwi.csd.uoc.gr
