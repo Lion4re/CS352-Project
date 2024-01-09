@@ -14,7 +14,7 @@ class Equip;
 std::vector<void (*)()> actions;
 std::vector<Pokemon *> pokemons;
 std::vector<Ability *> abilities;
-std::vector<Pokemon *> pokemonsInGame;
+Pokemon* pokemonsInGame[2] = {nullptr, nullptr};
 
 
 Pokemon *searchPokemon(Pokemon *x){
@@ -34,6 +34,7 @@ private:
     std::string type;
     int healthPoints;
     int maxHealthPoints;
+    int inPokeball; // 0 = not in pokeball, 1 = in pokeball
 
 public:
     Pokemon(){};
@@ -42,18 +43,31 @@ public:
     Pokemon(std::string name, std::string type, int healthPoints)
         : name(name), type(type), healthPoints(healthPoints) {
             this->maxHealthPoints = healthPoints;
+            this->inPokeball = 0;
             pokemons.push_back(this);
         }
-
-    void printName(){
-        std::cout << name << std::endl;
-    }
 
     void print()
     {
         std::cout << "Name: " << name << std::endl;
-        std::cout << "Type: " << type << std::endl;
         std::cout << "Health Points: " << healthPoints << std::endl;
+        if(inPokeball == 0){
+            std::cout << "Pokemon out of Pokeball" << std::endl;
+        } else{
+            std::cout << "Pokemon in Pokeball" << std::endl;
+        }
+    }
+
+    int getInPokeball(){
+        return inPokeball;
+    }
+
+    void setInPokeball(int inPokeball){
+        this->inPokeball = inPokeball;
+    }
+
+    void printName(){
+        std::cout << name << std::endl;
     }
 
     std::string getType(){
@@ -278,25 +292,40 @@ Pokemon *searchPokemonName(std::string name){
     return nullptr; // Return nullptr if Pokemon is not found
 }
 
+void printPokemons(){
+    for (auto& p : pokemons) {
+        p->printName();
+    }
+}
 
-void select_pokemons(){
+void printPokemonInfo(Pokemon *pokemon){
+    pokemon->print();
+}
+
+
+void select_pokemons(int PokemonIndex){
     std::string pokemon_name="";
     Pokemon *pokemon;
 
-    if(game->getAttackerIndex() == 1){
-        while(searchPokemonName(pokemon_name) == nullptr){
-         std::cout << "\nPlayer1 select pokemons:\n-----------------------" << std::endl;
-        //printAvailableWizards();
+    while(searchPokemonName(pokemon_name) == nullptr){
+         std::cout << "\nPlayer " << PokemonIndex+1 << " select pokemons:\n-----------------------" << std::endl;
+        printPokemons();
+        std::cout << "-----------------------" << std::endl;
         std::getline(std::cin, pokemon_name);
-        }
-    }else{
-        while(searchPokemonName(pokemon_name) == nullptr){
-        std::cout << "\nPlayer2 select pokemons:\n-----------------------" << std::endl;
-        //printAvailableWizards();
-        std::getline(std::cin, pokemon_name);
-        }
     }
     pokemon = searchPokemonName(pokemon_name);
-    pokemonsInGame.push_back(pokemon);
+    pokemonsInGame[PokemonIndex] = new Pokemon(*pokemon);
+}
+
+
+void duel() {
+    std::cout << "------------------------------ POKEMON THE GAME ------------------------------" << std::endl;
+
+    for (int i = 0; i < 2; i++)
+    {
+        select_pokemons(i);
+    }
+    Pokemon *Pokemon1 = pokemonsInGame[0];
+    Pokemon *Pokemon2 = pokemonsInGame[1];
 }
 

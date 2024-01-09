@@ -39,10 +39,14 @@
 #define START {
 #define END }
 #define ACTION
-#define IF 
-#define ELSE_IF 
-#define ELSE  
-#define DO
+
+
+#define IF if(
+#define ELSE_IF ;} else if(
+#define ELSE ;} else {
+#define DO {
+
+
 #define FOR
 #define ROUNDS
 #define AFTER
