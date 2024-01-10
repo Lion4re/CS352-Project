@@ -1,6 +1,7 @@
 #include "Classes_n_Funcs.hpp"
 #pragma once
-
+Heal heal;
+Damage damage;
 
 #define BEGIN_GAME     \
     int main()         \
@@ -25,40 +26,47 @@
 #define HP healthPoints
 
 
-#define GET_NAME(pokemon) searchPokemon(pokemon 0)->getName();
-#define GET_TYPE(pokemon) searchPokemon(pokemon 1)->getType();
-#define GET_HP(pokemon) searchPokemon(pokemon 2)->getHealth();
-#define IS_IN_POKEBALL(pokemon) searchPokemon(pokemon 3)->getInPokeball();
+#define GET_NAME(pokemon) searchPokemon(pokemon 0)->getName()
+#define GET_TYPE(pokemon) searchPokemon(pokemon 1)->getType()
+#define GET_HP(pokemon) searchPokemon(pokemon 2)->getHealth()
+#define IS_IN_POKEBALL(pokemon) searchPokemon(pokemon 3)->getInPokeball()
 
 
 
-#define POKEBALL
+#define POKEBALL pokeball = 
 #define ATTACKER pokemonsInGame[game->getAttackerIndex()],
 #define DEFENDER pokemonsInGame[game->getDefenderIndex()],
 #define DAMAGE ; damage = 
 #define HEAL ; heal =
 #define START []() {
+#define AND(...) and_(countArgs(__VA_ARGS__), __VA_ARGS__)
+#define OR(...) or_(countArgs(__VA_ARGS__), __VA_ARGS__)
+#define NOT(x) not_(x)   
+
+
 #define END ; }
 
 
-#define ACTION
+#define ACTION action
 
 
 #define IF if(
 #define ELSE_IF ;} else if(
 #define ELSE ;} else {
-#define DO {
+#define DO ){
 
 
 #define FOR
 #define ROUNDS
 #define AFTER
+
+
 #define SHOW ; std::cout << std::endl <<
-#define DEAR
-#define LEARN ; pokemon_learn = find_wizard(
+#define DEAR ; learner = searchPokemonName(
 
 
-#define ABILITY_NAME(ability_name)
+#define LEARN );   
+#define ABILITY_NAME(ability_name) 
 
 
 #define DUEL ; duel();
