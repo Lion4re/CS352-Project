@@ -8,7 +8,8 @@
 #include <cstddef>
 
 template <typename... Args>
-constexpr std::size_t countArgs(Args... args) {
+constexpr std::size_t countArgs(Args... args)
+{
     return sizeof...(args);
 }
 
@@ -71,7 +72,6 @@ public:
 };
 Round *game = new Round();
 
-
 class Actions
 {
 public:
@@ -91,6 +91,7 @@ private:
     int inPokeball; // 0 = not in pokeball, 1 = in pokeball
     std::vector<Ability *> abilities;
     std::vector<Actions *> pokemonactions;
+
 public:
     Pokemon(){};
     ~Pokemon(){};
@@ -206,11 +207,13 @@ public:
             this->heal(static_cast<int>(this->getMaxHealthPoints() * 0.05f));
         }
 
-        for (unsigned i = 0; i < this->pokemonactions.size(); i++) {
-        if ((pokemonactions[i]->actions.empty())!= false) {
-           (*(pokemonactions[i]->actions.front()))();
-            pokemonactions[i]->actions.erase(pokemonactions[i]->actions.begin() + 0);
-         }
+        for (unsigned i = 0; i < this->pokemonactions.size(); i++)
+        {
+            if ((pokemonactions[i]->actions.empty()) != false)
+            {
+                (*(pokemonactions[i]->actions.front()))();
+                pokemonactions[i]->actions.erase(pokemonactions[i]->actions.begin() + 0);
+            }
         }
     }
 
@@ -231,7 +234,7 @@ public:
         abilities.push_back(ability);
     }
 
-    Pokemon *operator,(Pokemon *pre_wiz);
+    Pokemon *operator,(Pokemon *pokemon_);
 };
 
 class Pokemons
@@ -262,19 +265,19 @@ public:
     Ability(std::string name, void (*action)())
         : name(name), action(action)
     {
-       
+
         if (hasSpaces(name))
         {
             throw std::invalid_argument("Ability with name: " + name + " has spaces in it");
         }
 
-        abilities.push_back(this);        
+        abilities.push_back(this);
     }
 
     Ability(std::string name)
     {
         count++;
-        this->name = "--ABILITY_WITH_NO_NAME--"+ std::to_string(count);
+        this->name = "--ABILITY_WITH_NO_NAME--" + std::to_string(count);
         abilities.push_back(this);
     };
 
@@ -283,11 +286,12 @@ public:
         return action();
     }
 
-    bool hasSpaces(const std::string& str) {
-    return str.find(' ') != std::string::npos;
+    bool hasSpaces(const std::string &str)
+    {
+        return str.find(' ') != std::string::npos;
     }
 
-    std::string getSpellName()
+    std::string getAbilityName()
     {
         return name;
     }
@@ -297,7 +301,7 @@ public:
         return "Ability name: " + name + "\n";
     }
 
-    Ability *operator,(Ability *prev_Ability);
+    Ability *operator,(Ability *ability_);
 };
 
 int Ability::count = 0;
@@ -320,11 +324,16 @@ class Damage
 {
 private:
     int damage;
-    Pokemon defender;
+    Pokemon *pokemon;
 
 public:
     Damage(){};
     ~Damage(){};
+
+    Damage(Pokemon *pokemon)
+    {
+        this->pokemon = pokemon;
+    }
 
     void setDamage(int damage)
     {
@@ -404,11 +413,16 @@ class Heal
 {
 private:
     int heal;
-    Pokemon pokemon;
+    Pokemon *pokemon;
 
 public:
     Heal(){};
     ~Heal(){};
+
+    Heal(Pokemon *pokemon)
+    {
+        this->pokemon = pokemon;
+    };
 
     void setHeal(int heal)
     {
@@ -422,7 +436,7 @@ public:
 
     int operator,(int heal)
     {
-        pokemon.heal(getHeal());
+        pokemon->heal(getHeal());
         return 0;
     }
 };
@@ -471,7 +485,7 @@ public:
     }
 
     Pokeball *operator,(Pokeball *pokeball)
-    { // ---o
+    { // ---a
         if (pokeball->getPokeballValue() == 1)
         {
             pokemon->setInPokeball(1);
@@ -482,15 +496,6 @@ public:
         }
         return pokeball;
     }
-
-    // PokeBall operator,(Pokeball pokeball) {  //  _
-    //     if (pokeball.getPokeballValue() == 1) {
-    //         pokemon->setInPokeball(1);
-    //     } else {
-    //         pokemon->setInPokeball(0);
-    //     }
-    //     return pokeball;
-    // }
 };
 
 Pokemon *searchPokemonName(std::string name)
@@ -505,11 +510,11 @@ Pokemon *searchPokemonName(std::string name)
     return nullptr; // Return nullptr if Pokemon is not found
 }
 
-Ability *searchAbilityName(std::string name)
+Ability *searchAbilityName(Pokemon *pokemon, std::string name)
 {
-    for (auto &a : abilities)
+    for (auto &a : pokemon->getAbilities())
     {
-        if (a->getSpellName() == name)
+        if (a->getAbilityName() == name)
         {
             return a;
         }
@@ -534,6 +539,14 @@ void printPokemons()
     for (auto &p : pokemons)
     {
         p->printName();
+    }
+}
+
+void printAbilities(Pokemon *pokemon)
+{
+    for (auto &a : pokemon->getAbilities())
+    {
+        std::cout << a->printer() << std::endl;
     }
 }
 
@@ -589,6 +602,29 @@ bool or_(int num, ...)
     return result;
 }
 
+void select_ability(Pokemon *pokemon)
+{
+    std::string ability_name = "";
+    Ability *ability;
+    bool flag;
+    while (searchAbilityName(pokemon, ability_name) == nullptr)
+    {
+        std::cout << "-----------------------" << std::endl;
+        printAbilities(pokemon);
+        std::cout << "-----------------------" << std::endl;
+        std::getline(std::cin, ability_name);
+        if (searchAbilityName(pokemon, ability_name) == nullptr)
+        {
+            std::cout << "Ability with name:" << ability_name << " not found" << std::endl;
+        }
+        else
+        {
+            ability = searchAbilityName(pokemon, ability_name);
+        }
+    }
+    ability->make_action();
+};
+
 void duel()
 {
     std::cout << "------------------------------ POKEMON THE GAME ------------------------------" << std::endl;
@@ -599,13 +635,12 @@ void duel()
     }
     Pokemon *Pokemon1 = pokemonsInGame[0];
     Pokemon *Pokemon2 = pokemonsInGame[1];
-    // while (Pokemon1->isAlive() && Pokemon2->isAlive()) {
+    while (Pokemon1->isAlive() && Pokemon2->isAlive()) {
     // StartNewRound();
     if (Pokemon1->getInPokeball() == 0)
     {
         std::cout << Pokemon1->getName() << "(Player1) select ability:" << std::endl;
-        // spell = player_select_Spell(Player1);
-        // spell->make_action();
+        select_ability(Pokemon1);
         Pokemon1->print();
         Pokemon2->print();
     }
@@ -613,5 +648,50 @@ void duel()
     {
         std::cout << Pokemon1->getName() << "(Player1) has not a pokemon out of pokeball so he can't cast an ability." << std::endl;
     }
-    //}
+
+    // Player1->updateRoundEffects();
+    //     new_game->swapAttackerDefender();
+
+    //     if (!Player2->isAlive()) {
+    //         break;
+    //     }
+
+    if (Pokemon2->isAlive())
+    {
+        if (Pokemon2->getInPokeball() == 0)
+        {
+            std::cout << Pokemon2->getName() << "(Player2) select ability:" << std::endl;
+            select_ability(Pokemon2);
+            Pokemon1->print();
+            Pokemon2->print();
+        }
+        else
+        {
+            std::cout << Pokemon1->getName() << "(Player2) has not a pokemon out of pokeball so he can't cast an ability." << std::endl;
+        }
+
+        //     Player2->updateRoundEffects();
+        // new_game->swapAttackerDefender();
+        // new_game->incRound();
+    }
+    else
+    {
+        break;
+    }
+    }
+
+    std::cout << "\n\n------------------------------ THE DUEL IS OVER ------------------------------" << std::endl;
+    std::string Name1 = Pokemon1->getName();
+    std::string Name2 = Pokemon2->getName();
+    if (Pokemon1->isAlive())
+    {
+
+        std::cout << "\n=== RIP -> (Player2)" << Name2 << "\n"
+                  << Name1 << "(Player1) Wins!!!" << std::endl;
+    }
+    else
+    {
+        std::cout << "\n=== RIP -> (Player1)" << Name1 << "\n"
+                  << Name2 << "(Player2) Wins!!!" << std::endl;
+    }
 }

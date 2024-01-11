@@ -3,6 +3,7 @@
 Heal heal;
 Damage damage;
 
+
 #define BEGIN_GAME     \
     int main()         \
     {                  \

@@ -7,7 +7,7 @@ CREATE ABILITY{
     NAME : "Expelliarmus",
     ACTION : START
             IF GET_HP(ATTACKER) < 30 DO 
-            HEAL ATTACKER 25 
+            DAMAGE ATTACKER 25 
             ELSE 
             HEAL ATTACKER 15 
             END
