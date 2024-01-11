@@ -72,9 +72,10 @@ LastMacroUsed last_macro_used = NONE;
     if(last_macro_used == AFTER_MACRO){ \
         class_action->actions.push_back(&(class_action->empty_action)); \
     } \
-    else{ \
+    else(last_macro_used == FOR_MACRO){ \
         class_action->actions.push_back(&(class_action->action)); \
     } \
+    last_macro_used = NONE; \
     class_action->action = []( 
 
 #define AFTER ; \
