@@ -52,6 +52,7 @@ public:
 
     void nextRound()
     {
+        Switch();
         round++;
     }
 
@@ -622,6 +623,9 @@ void select_ability(Pokemon *pokemon)
     bool flag;
     while (searchAbilityName(pokemon, ability_name) == nullptr)
     {
+        std::cout << "\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+        std::cout << "Round: " << game->getRound() << std::endl;
+        std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" << std::endl;       
         std::cout << "-----------------------" << std::endl;
         printAbilities(pokemon);
         std::cout << "-----------------------" << std::endl;
@@ -648,49 +652,45 @@ void duel()
     }
     Pokemon *Pokemon1 = pokemonsInGame[0];
     Pokemon *Pokemon2 = pokemonsInGame[1];
-    while (Pokemon1->isAlive() && Pokemon2->isAlive()) {
-    // StartNewRound();
-    if (Pokemon1->getInPokeball() == 0)
+    while (Pokemon1->isAlive() && Pokemon2->isAlive())
     {
-        std::cout << Pokemon1->getName() << "(Player1) select ability:" << std::endl;
-        select_ability(Pokemon1);
-        Pokemon1->print();
-        Pokemon2->print();
-    }
-    else
-    {
-        std::cout << Pokemon1->getName() << "(Player1) has not a pokemon out of pokeball so he can't cast an ability." << std::endl;
-    }
-
-    // Player1->updateRoundEffects();
-    //     new_game->swapAttackerDefender();
-
-    //     if (!Player2->isAlive()) {
-    //         break;
-    //     }
-
-    if (Pokemon2->isAlive())
-    {
-        if (Pokemon2->getInPokeball() == 0)
+        // StartNewRound();
+        if (Pokemon1->getInPokeball() == 0)
         {
-            std::cout << Pokemon2->getName() << "(Player2) select ability:" << std::endl;
-            select_ability(Pokemon2);
+            std::cout << Pokemon1->getName() << "(Player1) select ability:" << std::endl;
+            select_ability(Pokemon1);
             Pokemon1->print();
             Pokemon2->print();
         }
         else
         {
-            std::cout << Pokemon1->getName() << "(Player2) has not a pokemon out of pokeball so he can't cast an ability." << std::endl;
+            std::cout << Pokemon1->getName() << "(Player1) has not a pokemon out of pokeball so he can't cast an ability." << std::endl;
         }
 
-        //     Player2->updateRoundEffects();
-        // new_game->swapAttackerDefender();
-        // new_game->incRound();
-    }
-    else
-    {
-        break;
-    }
+        Pokemon1->update();
+        game->Switch();
+
+        if (Pokemon2->isAlive())
+        {
+            if (Pokemon2->getInPokeball() == 0)
+            {
+                std::cout << Pokemon2->getName() << "(Player2) select ability:" << std::endl;
+                select_ability(Pokemon2);
+                Pokemon1->print();
+                Pokemon2->print();
+            }
+            else
+            {
+                std::cout << Pokemon1->getName() << "(Player2) has not a pokemon out of pokeball so he can't cast an ability." << std::endl;
+            }
+
+            Pokemon2->update();
+            game->nextRound();
+        }
+        else
+        {
+            break;
+        }
     }
 
     std::cout << "\n\n------------------------------ THE DUEL IS OVER ------------------------------" << std::endl;
@@ -700,11 +700,11 @@ void duel()
     {
 
         std::cout << "\n=== RIP -> (Player2)" << Name2 << "\n"
-                << Name1 << "(Player1) Wins!!!" << std::endl;
+                  << Name1 << "(Player1) Wins!!!" << std::endl;
     }
     else
     {
         std::cout << "\n=== RIP -> (Player1)" << Name1 << "\n"
-                << Name2 << "(Player2) Wins!!!" << std::endl;
+                  << Name2 << "(Player2) Wins!!!" << std::endl;
     }
 }
