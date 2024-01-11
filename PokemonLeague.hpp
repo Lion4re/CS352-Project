@@ -4,6 +4,9 @@ Heal heal;
 Damage damage;
 Actions *class_action = new Actions();
 
+enum LastMacroUsed { NONE, FOR_MACRO, AFTER_MACRO };
+LastMacroUsed last_macro_used = NONE;
+
 
 #define BEGIN_GAME     \
     int main()         \
@@ -59,35 +62,27 @@ Actions *class_action = new Actions();
 
 
 #define FOR ; \
-    forFlag = true; \
-    class_action = new Action(); \
-    #define FOR ; \
-    forFlag = true; \
+    last_macro_used = FOR_MACRO; \
     class_action = new Action(); \
     std::string attackerWithoutComma = removeTrailingComma(ATTACKER); \
     pokemonsInGame[std::stoi(attackerWithoutComma)].actions.push_back(class_action); \
     for(int = 0; i < 
 
-
 #define ROUNDS ; i++) { \
-    if(forFlag){ \
+    if(last_macro_used == AFTER_MACRO){ \
         class_action->actions.push_back(&(class_action->empty_action)); \
     } \
     else{ \
         class_action->actions.push_back(&(class_action->action)); \
     } \
-    class_action->actions.pop_back(); \
-    class_action->actions.push_back(&(class_action->action)); \
-    flagfromafter = false; \
-    class_action->action = []( \
+    class_action->action = []( 
 
 #define AFTER ; \
-    forFlag = false; \
+    last_macro_used = AFTER_MACRO; \
     class_action = new Action(); \
     std::string attackerWithoutComma = removeTrailingComma(ATTACKER); \
     pokemonsInGame[std::stoi(attackerWithoutComma)].actions.push_back(class_action); \
-    int i;  \
-    for( i = 0; i <
+    for(int = 0; i <
 
 
 #define SHOW ; std::cout << std::endl <<
