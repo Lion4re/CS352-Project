@@ -81,6 +81,7 @@ public:
     Actions() {}
     ~Actions() {}
 };
+
 class Pokemon
 {
 private:
