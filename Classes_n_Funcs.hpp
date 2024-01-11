@@ -291,7 +291,7 @@ public:
     {
         ability->printer();
         abilities.push_back(ability);
-        return 1;
+        return 0;
     }
 
     Pokemon *operator,(Pokemon *pokemon_);
