@@ -5,8 +5,10 @@ Damage damage;
 Take pokeball;
 Actions *class_action = new Actions();
 
-enum LastMacroUsed { NONE, FOR_MACRO, AFTER_MACRO };
-LastMacroUsed last_macro_used = NONE;
+int flagAfter = 0;
+
+// enum LastMacroUsed { NONE, FOR_MACRO, AFTER_MACRO };
+// LastMacroUsed last_macro_used = NONE;
 
 
 #define BEGIN_GAME     \
@@ -62,28 +64,33 @@ LastMacroUsed last_macro_used = NONE;
 #define DO ){
 
 
-#define FOR ; \
-    last_macro_used = FOR_MACRO; \
-    class_action = new Actions(); \
-    pokemonsInGame[game->getAttackerIndex()]->getActions().push_back(class_action); \
-    int i; \
-    for(i = 0; i < 
+#define FOR                                                       \
+    ;                                                            \
+    class_action = new Actions();                        \
+    pokemonsInGame[game->getAttackerIndex()]->pokemonactions.push_back(class_action); \
+    for (int i = 0; i <
 
-#define ROUNDS ; i++) { \
-    if(last_macro_used == AFTER_MACRO){ \
-        class_action->actions.push_back((class_action->empty_action)); \
-    }else if(last_macro_used == FOR_MACRO){ \
-        class_action->actions.push_back(class_action->action); \
-    } \
-    last_macro_used = NONE; \
-    class_action->action = []( 
+#define ROUNDS                                                              \
+    ;                                                                       \
+        i++)                                                               \
+    {                                                                       \
+        if (flagAfter) {                                               \
+            class_action->actions.push_back(&(class_action->empty_action)); \
+        } else {                                                            \
+            class_action->actions.push_back(&(class_action->action));       \
+        }                                                                   \
+    }                                                                       \
+    class_action->actions.pop_back();                                       \
+    class_action->actions.push_back(&(class_action->action));               \
+    flagAfter = 0;                                                     \
+    class_action->action = [](
 
-#define AFTER ; \
-    last_macro_used = AFTER_MACRO; \
-    class_action = new Actions(); \
-    pokemonsInGame[game->getAttackerIndex()]->getActions().push_back(class_action); \
-    int i; \
-    for(i = 0; i <
+#define AFTER                                                    \
+    ;                                                            \
+    flagAfter = 1;                                          \
+    class_action = new Actions();                        \
+    pokemonsInGame[game->getAttackerIndex()]->pokemonactions.push_back(class_action); \
+    for (int i = 0; i <
 
 
 #define SHOW ; std::cout << std::endl <<
