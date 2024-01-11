@@ -148,9 +148,10 @@ private:
     int maxHealthPoints;
     int inPokeball; // 0 = not in pokeball, 1 = in pokeball
     std::vector<Ability *> abilities;
-    std::vector<Actions *> pokemonactions;
+    
 
 public:
+    std::vector<Actions *> pokemonactions;
     Pokemon(){};
     ~Pokemon(){};
 
