@@ -624,10 +624,7 @@ void select_ability(Pokemon *pokemon)
     Ability *ability;
     bool flag;
     while (searchAbilityName(pokemon, ability_name) == nullptr)
-    {
-        std::cout << "\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
-        std::cout << "Round: " << game->getRound() << std::endl;
-        std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" << std::endl;       
+    {     
         std::cout << "-----------------------" << std::endl;
         printAbilities(pokemon);
         std::cout << "-----------------------" << std::endl;
