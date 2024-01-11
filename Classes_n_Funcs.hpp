@@ -31,6 +31,7 @@ std::vector<Pokemon *> pokemons;
 std::vector<Ability *> abilities;
 Pokemon *pokemonsInGame[2] = {nullptr, nullptr};
 Pokemon *learner;
+Ability *AbilityToLearn[];
 
 class Round
 {
@@ -640,7 +641,7 @@ void select_ability(Pokemon *pokemon)
             ability = searchAbilityName(pokemon, ability_name);
         }
     }
-    ability->make_action();
+    ability->get_action();
 };
 
 void duel()
@@ -655,7 +656,9 @@ void duel()
     Pokemon *Pokemon2 = pokemonsInGame[1];
     while (Pokemon1->isAlive() && Pokemon2->isAlive())
     {
-        // StartNewRound();
+    std::cout << "\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+    std::cout << "Round: " << game->getRound() << std::endl;
+    std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" << std::endl;
         if (Pokemon1->getInPokeball() == 0)
         {
             std::cout << Pokemon1->getName() << "(Player1) select ability:" << std::endl;
