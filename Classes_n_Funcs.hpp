@@ -30,8 +30,7 @@ std::vector<void (*)()> actions;
 std::vector<Pokemon *> pokemons;
 std::vector<Ability *> abilities;
 Pokemon *pokemonsInGame[2] = {nullptr, nullptr};
-Pokemon *learner;
-Ability *AbilityToLearn[];
+int AbilityToLearn[1];
 
 class Round
 {
@@ -83,6 +82,62 @@ public:
     Actions() {}
     ~Actions() {}
 };
+
+class Ability
+{
+private:
+    std::string name;
+    void (*action)();
+    static int count;
+
+public:
+    Ability(){};
+    ~Ability(){};
+
+    Ability(std::string name, void (*action)())
+        : name(name), action(action)
+    {
+
+        if (hasSpaces(name))
+        {
+            throw std::invalid_argument("Ability with name: " + name + " has spaces in it");
+        }
+
+        abilities.push_back(this);
+    }
+
+    Ability(std::string name)
+    {
+        count++;
+        this->name = "--ABILITY_WITH_NO_NAME--" + std::to_string(count);
+        abilities.push_back(this);
+    };
+    
+
+    void get_action()
+    {
+        return action();
+    }
+
+    bool hasSpaces(const std::string &str)
+    {
+        return str.find(' ') != std::string::npos;
+    }
+
+    std::string getAbilityName()
+    {
+        return name;
+    }
+
+    void printer()
+    {
+        std::cout << "Ability name: " << name << "\n" << std::endl;
+    }
+
+    Ability *operator,(Ability *ability_);
+};
+
+int Ability::count = 0;
 
 class Pokemon
 {
@@ -232,13 +287,17 @@ public:
         }
     }
 
-    void addAbility(Ability *ability)
+    int addAbility(Ability *ability)
     {
+        ability->printer();
         abilities.push_back(ability);
+        return 1;
     }
 
     Pokemon *operator,(Pokemon *pokemon_);
 };
+
+Pokemon *learner = new Pokemon;
 
 class Pokemons
 {
@@ -254,61 +313,7 @@ public:
     }
 };
 
-class Ability
-{
-private:
-    std::string name;
-    void (*action)();
-    static int count;
 
-public:
-    Ability(){};
-    ~Ability(){};
-
-    Ability(std::string name, void (*action)())
-        : name(name), action(action)
-    {
-
-        if (hasSpaces(name))
-        {
-            throw std::invalid_argument("Ability with name: " + name + " has spaces in it");
-        }
-
-        abilities.push_back(this);
-    }
-
-    Ability(std::string name)
-    {
-        count++;
-        this->name = "--ABILITY_WITH_NO_NAME--" + std::to_string(count);
-        abilities.push_back(this);
-    };
-    
-
-    void get_action()
-    {
-        return action();
-    }
-
-    bool hasSpaces(const std::string &str)
-    {
-        return str.find(' ') != std::string::npos;
-    }
-
-    std::string getAbilityName()
-    {
-        return name;
-    }
-
-    void printer()
-    {
-        std::cout << "Ability name: " << name << "\n" << std::endl;
-    }
-
-    Ability *operator,(Ability *ability_);
-};
-
-int Ability::count = 0;
 
 class Abilities
 {
@@ -526,6 +531,18 @@ Ability *searchAbilityName(Pokemon *pokemon, std::string name)
     return nullptr; // Return nullptr if Pokemon is not found
 }
 
+Ability *searchAbilityName(std::string name)
+{
+    for (auto &a : abilities)
+    {
+        if (a->getAbilityName() == name)
+        {
+            return a;
+        }
+    }
+    return nullptr; // Return nullptr if Pokemon is not found
+}
+
 Pokemon *searchPokemon(Pokemon *x, int t)
 {
     for (int i = 0; i < 2; i++)
@@ -548,6 +565,10 @@ void printPokemons()
 
 void printAbilities(Pokemon *pokemon)
 {
+    if (pokemon->getAbilities().empty())
+    {
+        throw std::runtime_error("You have no abilities");
+    }
     for (auto &a : pokemon->getAbilities())
     {
         a->printer();
@@ -572,7 +593,7 @@ void select_pokemons(int PokemonIndex)
         std::getline(std::cin, pokemon_name);
     }
     pokemon = searchPokemonName(pokemon_name);
-    pokemonsInGame[PokemonIndex] = new Pokemon(pokemon);
+    pokemonsInGame[PokemonIndex] = new Pokemon(*pokemon);
 }
 
 /* Utility functions */
@@ -622,7 +643,6 @@ void select_ability(Pokemon *pokemon)
 {
     std::string ability_name = "";
     Ability *ability;
-    bool flag;
     while (searchAbilityName(pokemon, ability_name) == nullptr)
     {     
         std::cout << "-----------------------" << std::endl;

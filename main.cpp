@@ -13,7 +13,17 @@ CREATE ABILITY{
             END
         END
 }
-//CREATE ABILITY{ NAME: "rawr"};
+CREATE ABILITY{
+    NAME : "Es",
+    ACTION : START
+            IF GET_HP(ATTACKER) < 30 DO 
+            DAMAGE ATTACKER 25 
+            ELSE 
+            HEAL ATTACKER 15 
+            END
+        END
+}
+DEAR "name" LEARN[ABILITY_NAME(Expelliarmus) ABILITY_NAME(Es)]
 
 DUEL
 SHOW GET_HP(ATTACKER)

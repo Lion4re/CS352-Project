@@ -86,17 +86,18 @@ Actions *class_action = new Actions();
     class_action = new Action(); \
     std::string attackerWithoutComma = removeTrailingComma(ATTACKER); \
     pokemonsInGame[std::stoi(attackerWithoutComma)].actions.push_back(class_action); \
-    for(int = 0; i <
+    int i;  \
+    for( i = 0; i <
 
 
 #define SHOW ; std::cout << std::endl <<
 #define DEAR ; learner = searchPokemonName(
 
 
-#define LEARN );   
+#define LEARN ); AbilityToLearn 
 
 
-#define ABILITY_NAME(ability_name) 
+#define ABILITY_NAME(ability_name) +learner->addAbility(searchAbilityName(#ability_name))
 
 
 #define DUEL ; duel();
