@@ -282,8 +282,9 @@ public:
         this->name = "--ABILITY_WITH_NO_NAME--" + std::to_string(count);
         abilities.push_back(this);
     };
+    
 
-    void make_action()
+    void get_action()
     {
         return action();
     }
@@ -298,9 +299,9 @@ public:
         return name;
     }
 
-    std::string printer()
+    void printer()
     {
-        return "Ability name: " + name + "\n";
+        std::cout << "Ability name: " << name << "\n" << std::endl;
     }
 
     Ability *operator,(Ability *ability_);
@@ -548,7 +549,7 @@ void printAbilities(Pokemon *pokemon)
 {
     for (auto &a : pokemon->getAbilities())
     {
-        std::cout << a->printer() << std::endl;
+        a->printer();
     }
 }
 
