@@ -572,6 +572,18 @@ void select_pokemons(int PokemonIndex)
     pokemonsInGame[PokemonIndex] = new Pokemon(pokemon);
 }
 
+/* Utility functions */
+
+// Function to remove a comma from the end of a string
+// Mainly used for removing the comma from the ATTACKER and DEFENDER macros
+std::string removeTrailingComma(const std::string &str)
+{
+    if (!str.empty() && str.back() == ',')
+        return str.substr(0, str.size() - 1);
+
+    return str;
+}
+
 bool not_(bool x)
 {
     return !x;
@@ -688,11 +700,11 @@ void duel()
     {
 
         std::cout << "\n=== RIP -> (Player2)" << Name2 << "\n"
-                  << Name1 << "(Player1) Wins!!!" << std::endl;
+                << Name1 << "(Player1) Wins!!!" << std::endl;
     }
     else
     {
         std::cout << "\n=== RIP -> (Player1)" << Name1 << "\n"
-                  << Name2 << "(Player2) Wins!!!" << std::endl;
+                << Name2 << "(Player2) Wins!!!" << std::endl;
     }
 }

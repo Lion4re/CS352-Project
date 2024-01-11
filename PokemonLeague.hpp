@@ -2,6 +2,7 @@
 #pragma once
 Heal heal;
 Damage damage;
+Actions *class_action = new Actions();
 
 
 #define BEGIN_GAME     \
@@ -57,9 +58,35 @@ Damage damage;
 #define DO ){
 
 
-#define FOR
-#define ROUNDS
-#define AFTER
+#define FOR ; \
+    forFlag = true; \
+    class_action = new Action(); \
+    #define FOR ; \
+    forFlag = true; \
+    class_action = new Action(); \
+    std::string attackerWithoutComma = removeTrailingComma(ATTACKER); \
+    pokemonsInGame[std::stoi(attackerWithoutComma)].actions.push_back(class_action); \
+    for(int = 0; i < 
+
+
+#define ROUNDS ; i++) { \
+    if(forFlag){ \
+        class_action->actions.push_back(&(class_action->empty_action)); \
+    } \
+    else{ \
+        class_action->actions.push_back(&(class_action->action)); \
+    } \
+    class_action->actions.pop_back(); \
+    class_action->actions.push_back(&(class_action->action)); \
+    flagfromafter = false; \
+    class_action->action = []( \
+
+#define AFTER ; \
+    forFlag = false; \
+    class_action = new Action(); \
+    std::string attackerWithoutComma = removeTrailingComma(ATTACKER); \
+    pokemonsInGame[std::stoi(attackerWithoutComma)].actions.push_back(class_action); \
+    for(int = 0; i <
 
 
 #define SHOW ; std::cout << std::endl <<
