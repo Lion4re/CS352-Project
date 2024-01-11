@@ -293,6 +293,12 @@ public:
         return 0;
     }
 
+    std::vector<Actions *> getActions()
+    {
+        return pokemonactions;
+    }
+
+
     Pokemon *operator,(Pokemon *pokemon_);
 };
 
@@ -469,8 +475,8 @@ public:
 
     Pokeball operator-() const
     {
-        Pokeball o(1);
-        return o;
+        Pokeball a(1);
+        return a;
     }
 
     int getPokeballValue()
@@ -478,6 +484,9 @@ public:
         return pokeball_value;
     }
 };
+
+Pokeball a;  
+Pokeball _(2);
 
 class Take
 {

@@ -1,30 +1,30 @@
 #include "PokemonLeague.hpp"
-
 BEGIN_GAME
-CREATE POKEMON{ NAME: "name", TYPE: "type", HP: 1245}
-CREATE POKEMONS [ POKEMON{ NAME: "Pikachu", TYPE: "Fire", HP: 35}, POKEMON{  NAME: "hi", TYPE: "Fire", HP: 35} , POKEMON{  NAME: "hello", TYPE: "Water", HP: 35}];
 CREATE ABILITY{
-    NAME : "Expelliarmus",
+    NAME : "Solar_Power",
     ACTION : START
-            IF GET_HP(ATTACKER) < 30 DO 
-            DAMAGE ATTACKER 25 
-            ELSE 
-            HEAL ATTACKER 15 
-            END
-        END
-}
-CREATE ABILITY{
-    NAME : "Es",
+        // Για 5 γύποςρ κάνει 8 damage στον αντίπαλο (DEFENDER)
+        FOR 5 ROUNDS DO
+            DAMAGE DEFENDER 8 END
+                END
+} CREATE ABILITY{
+    NAME : "Slash",
     ACTION : START
-            IF GET_HP(ATTACKER) < 30 DO 
-            DAMAGE ATTACKER 25 
-            ELSE 
-            HEAL ATTACKER 15 
-            END
-        END
-}
-DEAR "name" LEARN[ABILITY_NAME(Expelliarmus) ABILITY_NAME(Es)]
-
-DUEL
-SHOW GET_HP(ATTACKER)
+        // Κάνει 22 damage στον αντίπαλο (DEFENDER)
+        DAMAGE DEFENDER 22 END
+} CREATE ABILITY{
+    NAME : "Blaze",
+    ACTION : START
+        // Κάνει heal στον εαςτό τος (ATTACKER)
+        HEAL ATTACKER 30 END
+} CREATE POKEMON{
+    NAME : "Charizard",
+    TYPE : "Fire",
+    HP : 100
+} CREATE POKEMON{
+    NAME : "Pikachu",
+    TYPE : "Electric",
+    HP : 90
+} DEAR "Charizard" LEARN[ ABILITY_NAME(Solar_Power) ABILITY_NAME(Slash) ABILITY_NAME(Blaze)] DEAR "Pikachu" LEARN[ABILITY_NAME(Bite) ABILITY_NAME(Slash)
+                                                                                                                                        ABILITY_NAME(Electric_Shock)] DUEL
 END_GAME
