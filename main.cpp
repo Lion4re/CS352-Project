@@ -28,13 +28,20 @@ CREATE ABILITY{
         // Κάνει heal στον εαςτό τος (ATTACKER)
         HEAL ATTACKER 30 END
 } CREATE POKEMON{
-    NAME : "Charizard",
+    NAME : "C",
     TYPE : "Fire",
     HP : 100
 } CREATE POKEMON{
-    NAME : "Pikachu",
+    NAME : "K",
+    TYPE : "Fire",
+    HP : 100
+}CREATE POKEMON{
+    NAME : "P",
     TYPE : "Electric",
     HP : 90
-} DEAR "Charizard" LEARN[ABILITY_NAME(Bite) ABILITY_NAME(Solar_Power) ABILITY_NAME(Slash) ABILITY_NAME(Blaze)] DEAR "Pikachu" LEARN[ABILITY_NAME(Bite) ABILITY_NAME(Slash)
-                                                                                                                                        ABILITY_NAME(Electric_Shock)] DUEL
+} DEAR "C" LEARN[ABILITY_NAME(Bite) ABILITY_NAME(Solar_Power) ABILITY_NAME(Slash) ABILITY_NAME(Blaze)] DEAR "P" LEARN[ABILITY_NAME(Bite) ABILITY_NAME(Slash)
+                                                                                                                                        ABILITY_NAME(Electric_Shock)] 
+ DEAR "K" LEARN[ABILITY_NAME(Bite) ABILITY_NAME(Slash)
+                                                                                                                                        ABILITY_NAME(Electric_Shock)]                                                                                                                                       
+                                                                                                                                        DUEL
 END_GAME

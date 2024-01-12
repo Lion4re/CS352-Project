@@ -26,10 +26,11 @@ class Take;
 Pokemon *searchPokemonName(std::string name);
 Ability *searchAbilityName(std::string name);
 
-std::vector<void (*)()> actions;
+typedef void (*Action)();
+std::vector<Action *> actions;
 std::vector<Pokemon *> pokemons;
 std::vector<Ability *> abilities;
-Pokemon *pokemonsInGame[2] = {nullptr, nullptr};
+std::vector<Pokemon *>pokemonsInGame;
 int AbilityToLearn[1];
 
 class Round
@@ -137,6 +138,13 @@ public:
     Ability *operator,(Ability *ability_);
 };
 
+std::ostream &operator<<(std::ostream &os, Ability *ability_temp) {
+    os << ability_temp->getAbilityName();
+    return os;
+}
+
+
+
 int Ability::count = 0;
 
 class Pokemon
@@ -168,12 +176,12 @@ public:
         pokemons.push_back(this);
     }
 
-    Pokemon(Pokemon *pokemon)
-        : name(pokemon->getName()), type(pokemon->getType()), healthPoints(pokemon->getHealth())
-    {
-        this->maxHealthPoints = healthPoints;
-        this->inPokeball = 0;
-    }
+    // Pokemon(Pokemon *pokemon)
+    //     : name(pokemon->getName()), type(pokemon->getType()), healthPoints(pokemon->getHealth())
+    // {
+    //     this->maxHealthPoints = healthPoints;
+    //     this->inPokeball = 0;
+    // }
 
     void print()
     {
@@ -300,10 +308,17 @@ public:
     }
 
 
-    Pokemon *operator,(Pokemon *pokemon_);
+    Pokemon *operator,(Pokemon *pokemon_){
+        return pokemon_;
+    }
 };
 
 Pokemon *learner = new Pokemon;
+
+std::ostream &operator<<(std::ostream &os, Pokemon *pokemon_temp) {
+    os << pokemon_temp->getName();
+    return os;
+}
 
 class Pokemons
 {
@@ -362,8 +377,8 @@ public:
 
     int operator,(int damage)
     {
-        Pokemon *attacker = pokemonsInGame[(game->getAttackerIndex())];
-        Pokemon *defender = pokemonsInGame[(game->getDefenderIndex())];
+        Pokemon *attacker = pokemonsInGame.at(game->getAttackerIndex());
+        //Pokemon *defender = pokemonsInGame[(game->getDefenderIndex())];
         do_damage(pokemon, attacker, damage);
         return 0;
     }
@@ -554,14 +569,7 @@ Ability *searchAbilityName(std::string name)
 
 Pokemon *searchPokemon(Pokemon *x, int t)
 {
-    for (int i = 0; i < 2; i++)
-    {
-        if (pokemonsInGame[i] == x)
-        {
-            return pokemonsInGame[i];
-        }
-    }
-    return nullptr; // Return nullptr if Pokemon is not found
+    return x;
 }
 
 void printPokemons()
@@ -574,6 +582,12 @@ void printPokemons()
 
 void printAbilities(Pokemon *pokemon)
 {
+    if(pokemon == nullptr)
+    {
+        throw std::runtime_error("Pokemon is nullptr");
+    }else{
+        std::cout << "Pokemon name: " << pokemon->getName() << std::endl;
+    }
     if (pokemon->getAbilities().empty())
     {
         throw std::runtime_error("You have no abilities");
@@ -589,20 +603,44 @@ void printPokemonInfo(Pokemon *pokemon)
     pokemon->print();
 }
 
-void select_pokemons(int PokemonIndex)
+void select_pokemons()
 {
-    std::string pokemon_name = "";
-    Pokemon *pokemon;
+   char name[40];
 
-    while (searchPokemonName(pokemon_name) == nullptr)
-    {
-        std::cout << "\nPlayer " << PokemonIndex + 1 << " select pokemons:\n-----------------------" << std::endl;
+    //perimenei input onoma kapoiou wizard apo player 1
+
+    std::cout << "\nPlayer1 select wizard:" << std::endl;
+    std::cout << "-----------------------" << std::endl;
+    printPokemons();
+    std::cout << "-----------------------" << std::endl;
+    std::cin.getline(name, sizeof(name));
+
+    while (searchPokemonName(name) == nullptr) {
+        std::cout << "\nPlayer1 select pokemon:" << std::endl;
+        std::cout << "-----------------------" << std::endl;
         printPokemons();
         std::cout << "-----------------------" << std::endl;
-        std::getline(std::cin, pokemon_name);
+        std::cin.getline(name, sizeof(name));
     }
-    pokemon = searchPokemonName(pokemon_name);
-    pokemonsInGame[PokemonIndex] = new Pokemon(*pokemon);
+
+     pokemonsInGame.push_back(new Pokemon(*searchPokemonName(name)));
+
+    std::cout << "\nPlayer2 select wizard:" << std::endl;
+    std::cout << "-----------------------" << std::endl;
+    printPokemons();
+    std::cout << "-----------------------" << std::endl;
+    std::cin.getline(name, sizeof(name));
+
+    while (searchPokemonName(name) == nullptr) {
+        std::cout << "\nPlayer2 select pokemon:" << std::endl;
+        std::cout << "-----------------------" << std::endl;
+        printPokemons();
+        std::cout << "-----------------------" << std::endl;
+        std::cin.getline(name, sizeof(name));
+    }
+
+    pokemonsInGame.push_back(new Pokemon(*searchPokemonName(name)));
+    name[0] = '\0';
 }
 
 /* Utility functions */
@@ -648,47 +686,68 @@ bool or_(int num, ...)
     return result;
 }
 
-void select_ability(Pokemon *pokemon)
+Ability *select_ability(Pokemon *pokemon)
 {
-    std::string ability_name = "";
-    Ability *ability;
-    while (searchAbilityName(pokemon, ability_name) == nullptr)
-    {     
-        std::cout << "-----------------------" << std::endl;
-        printAbilities(pokemon);
-        std::cout << "-----------------------" << std::endl;
-        std::getline(std::cin, ability_name);
-        if (searchAbilityName(pokemon, ability_name) == nullptr)
-        {
-            std::cout << "Ability with name:" << ability_name << " not found" << std::endl;
-        }
-        else
-        {
-            ability = searchAbilityName(pokemon, ability_name);
-        }
+   char spell_name[40];
+    std::cout << "-----------------------" << std::endl;
+    for (unsigned int i = 0; i < pokemon->getAbilities().size(); i++) {
+        std::cout << pokemon->getAbilities().at(i)->getAbilityName() << std::endl;
     }
-    ability->get_action();
+    std::cout << "-----------------------" << std::endl;
+
+    std::cin.getline(spell_name, sizeof(spell_name));
+
+    while (searchAbilityName(pokemon, spell_name) == nullptr) {
+        std::cin.getline(spell_name, sizeof(spell_name));
+    }
+
+    return searchAbilityName(pokemon, spell_name);
 };
+
+int pokemon_to_learn(Pokemon *pokemon,std::string ability_)
+{
+    if(pokemon != nullptr)
+    {
+        for (unsigned int i = 0; i < abilities.size(); i++) {
+        if (abilities[i]->getAbilityName() ==ability_) {
+            pokemon->addAbility(abilities.at(i));
+            std::cout << abilities[i]->getAbilityName() << std::endl;
+            return 0;
+        }
+        }
+    }else{
+        return 1;
+    }
+    return 0;
+}
+
 
 void duel()
 {
     std::cout << "------------------------------ POKEMON THE GAME ------------------------------" << std::endl;
 
-    for (int i = 0; i < 2; i++)
-    {
-        select_pokemons(i);
-    }
-    Pokemon *Pokemon1 = pokemonsInGame[0];
-    Pokemon *Pokemon2 = pokemonsInGame[1];
+    // for (int i = 0; i < 2; i++)
+    // {
+    //     select_pokemons(i);
+    // }
+    select_pokemons();
+    //select_pokemons(1);
+    std::cout << "pokemon in game size is " << pokemons.size() << std::endl;
+    Pokemon *Pokemon1 = pokemonsInGame.at(0);
+    Pokemon *Pokemon2 = pokemonsInGame.at(1);
+    Ability *ability;
     while (Pokemon1->isAlive() && Pokemon2->isAlive())
     {
+        Pokemon1->print();
+            Pokemon2->print();
     std::cout << "\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
     std::cout << "Round: " << game->getRound() << std::endl;
     std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" << std::endl;
         if (Pokemon1->getInPokeball() == 0)
         {
             std::cout << Pokemon1->getName() << "(Player1) select ability:" << std::endl;
-            select_ability(Pokemon1);
+            ability = select_ability(Pokemon1);
+            ability->get_action();
             Pokemon1->print();
             Pokemon2->print();
         }

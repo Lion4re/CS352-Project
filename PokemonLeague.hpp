@@ -7,6 +7,7 @@ Actions *class_action = new Actions();
 
 enum LastMacroUsed { NONE, FOR_MACRO, AFTER_MACRO };
 LastMacroUsed last_macro_used = NONE;
+bool flagAfter = false;
 
 
 #define BEGIN_GAME     \
@@ -97,7 +98,7 @@ LastMacroUsed last_macro_used = NONE;
 #define LEARN ); AbilityToLearn 
 
 
-#define ABILITY_NAME(ability_name) +learner->addAbility(searchAbilityName(#ability_name))
+#define ABILITY_NAME(ability_name) +pokemon_to_learn(learner, #ability_name)
 
 
 #define DUEL ; duel();
