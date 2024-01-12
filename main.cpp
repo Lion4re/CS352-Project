@@ -4,11 +4,11 @@ CREATE ABILITY{
     NAME : "Bite",
     ACTION : START
             // Επιστπέυει το αντίπαλο pokemon στο pokeball
-            POKEBALL DEFENDER _
-                // Μετά απο 2 γύποςρ ξαναβγάδει τον αντίπαλο(DEFENDER)
-                AFTER 2 ROUNDS DO
-                    POKEBALL DEFENDER-- -a
-            END
+        
+
+                    IF AND ( GET_HP(ATTACKER) > 50, GET_HP(DEFENDER) > 50) DO
+                        SHOW "Name: " << GET_NAME(DEFENDER)<< "Type: " << GET_TYPE(DEFENDER)
+                    END
             END
 }CREATE ABILITY{
     NAME : "Solar",

@@ -5,8 +5,8 @@ Damage damage;
 Take pokeball;
 Actions *class_action = new Actions();
 
-// enum LastMacroUsed { NONE, FOR_MACRO, AFTER_MACRO };
-// LastMacroUsed last_macro_used = NONE;
+enum LastMacroUsed { NONE, FOR_MACRO, AFTER_MACRO };
+LastMacroUsed last_macro_used = NONE;
 bool flagAfter = false;
 
 
@@ -65,6 +65,7 @@ bool flagAfter = false;
 
 
 #define FOR ; \
+    last_macro_used = FOR_MACRO; \
     class_action = new Actions(); \
     pokemonsInGame.at(game->getAttackerIndex())->pokemonactions.push_back(class_action); \
     for(int i = 0; i < 
@@ -73,19 +74,19 @@ bool flagAfter = false;
     ;                                                                       \
         i++)                                                               \
     {                                                                       \
-        if (flagAfter) {                                               \
-            class_action->actions.push_back(&(class_action->empty_action)); \
+        if (last_macro_used != AFTER_MACRO) {    \
+            class_action->actions.push_back(&(class_action->action));   \
         } else {                                                            \
-            class_action->actions.push_back(&(class_action->action));       \
+            class_action->actions.push_back(&(class_action->empty_action));    \
         }                                                                   \
     }                                                                       \
     class_action->actions.pop_back();                                       \
     class_action->actions.push_back(&(class_action->action));               \
-    flagAfter = false;                                                     \
+    last_macro_used = NONE;                                                   \
     class_action->action = [](
 
 #define AFTER ; \
-    flagAfter = true; \
+    last_macro_used = AFTER_MACRO; \
     class_action = new Actions(); \
     pokemonsInGame.at(game->getAttackerIndex())->pokemonactions.push_back(class_action); \
     for(int i = 0; i <=
