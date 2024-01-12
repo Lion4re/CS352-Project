@@ -77,7 +77,7 @@ Round *game = new Round();
 class Actions
 {
 public:
-    std::vector<void (*)()> actions;
+    std::vector<void (**)() > actions;
     void (*action)();
     void (*empty_action)() = []() {};
     Actions() {}
@@ -278,7 +278,7 @@ public:
 
         for (unsigned i = 0; i < this->pokemonactions.size(); i++)
         {
-            if ((pokemonactions[i]->actions.empty()) != false)
+            if ((pokemonactions[i]->actions.empty()) == false)
             {
                 (*(pokemonactions[i]->actions.front()))();
                 pokemonactions[i]->actions.erase(pokemonactions[i]->actions.begin() + 0);
@@ -394,8 +394,8 @@ public:
     std::cout << "type of defender is " << defender->getType() << "and the name is" << defender->getName() << std::endl;
 
 
-    float increasedDamage;
-    float reducedDamage;
+    float increasedDamage = 0;
+    float reducedDamage = 0;
 
     if (defender->getType() == "Electric")
     {
@@ -453,6 +453,9 @@ public:
     damage = damage + increasedDamage - reducedDamage;
     std::cout << "Final damage: " << damage << std::endl;
     defender->receiveDamage(damage);
+
+    increasedDamage = 0;
+    reducedDamage = 0;
 }
 
 

@@ -5,8 +5,8 @@ Damage damage;
 Take pokeball;
 Actions *class_action = new Actions();
 
-enum LastMacroUsed { NONE, FOR_MACRO, AFTER_MACRO };
-LastMacroUsed last_macro_used = NONE;
+// enum LastMacroUsed { NONE, FOR_MACRO, AFTER_MACRO };
+// LastMacroUsed last_macro_used = NONE;
 bool flagAfter = false;
 
 
@@ -65,9 +65,8 @@ bool flagAfter = false;
 
 
 #define FOR ; \
-    last_macro_used = FOR_MACRO; \
     class_action = new Actions(); \
-    pokemonsInGame[game->getAttackerIndex()]->pokemonactions.push_back(class_action); \
+    pokemonsInGame.at(game->getAttackerIndex())->pokemonactions.push_back(class_action); \
     for(int i = 0; i < 
 
 #define ROUNDS                                                              \
@@ -75,20 +74,20 @@ bool flagAfter = false;
         i++)                                                               \
     {                                                                       \
         if (flagAfter) {                                               \
-            class_action->actions.push_back((class_action->empty_action)); \
+            class_action->actions.push_back(&(class_action->empty_action)); \
         } else {                                                            \
-            class_action->actions.push_back((class_action->action));       \
+            class_action->actions.push_back(&(class_action->action));       \
         }                                                                   \
     }                                                                       \
     class_action->actions.pop_back();                                       \
-    class_action->actions.push_back((class_action->action));               \
+    class_action->actions.push_back(&(class_action->action));               \
     flagAfter = 0;                                                     \
     class_action->action = [](
 
 #define AFTER ; \
-    last_macro_used = AFTER_MACRO; \
+    flagAfter = 1; \
     class_action = new Actions(); \
-    pokemonsInGame[game->getAttackerIndex()]->pokemonactions.push_back(class_action); \
+    pokemonsInGame.at(game->getAttackerIndex())->pokemonactions.push_back(class_action); \
     for(int i = 0; i <
 
 
