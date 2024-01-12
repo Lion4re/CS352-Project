@@ -307,7 +307,6 @@ public:
         return pokemonactions;
     }
 
-
     Pokemon *operator,(Pokemon *pokemon_){
         return pokemon_;
     }
@@ -764,7 +763,8 @@ void duel()
             if (Pokemon2->getInPokeball() == 0)
             {
                 std::cout << Pokemon2->getName() << "(Player2) select ability:" << std::endl;
-                select_ability(Pokemon2);
+                ability = select_ability(Pokemon2);
+                ability->get_action();
                 Pokemon1->print();
                 Pokemon2->print();
             }
