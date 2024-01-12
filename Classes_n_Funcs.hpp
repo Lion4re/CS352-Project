@@ -393,6 +393,7 @@ public:
     std::cout << "---------------------------------------------------------------------------------------------------------" << std::endl;
     std::cout << "type of defender is " << defender->getType() << "and the name is" << defender->getName() << std::endl;
 
+
     float increasedDamage;
     float reducedDamage;
 

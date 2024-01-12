@@ -44,4 +44,5 @@ CREATE ABILITY{
  DEAR "K" LEARN[ABILITY_NAME(Bite) ABILITY_NAME(Slash) ABILITY_NAME(Solar)
                                                                                                                                         ABILITY_NAME(Electric_Shock)]                                                                                                                                       
                                                                                                                                         DUEL
-END_GAME
+END_GAME 
+
