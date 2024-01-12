@@ -81,14 +81,14 @@ bool flagAfter = false;
     }                                                                       \
     class_action->actions.pop_back();                                       \
     class_action->actions.push_back(&(class_action->action));               \
-    flagAfter = 0;                                                     \
+    flagAfter = false;                                                     \
     class_action->action = [](
 
 #define AFTER ; \
-    flagAfter = 1; \
+    flagAfter = true; \
     class_action = new Actions(); \
     pokemonsInGame.at(game->getAttackerIndex())->pokemonactions.push_back(class_action); \
-    for(int i = 0; i <
+    for(int i = 0; i <=
 
 
 #define SHOW ; std::cout << std::endl <<

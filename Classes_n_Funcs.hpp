@@ -20,7 +20,6 @@ class Abilities;
 class Round;
 class Damage;
 class Heal;
-class Equip;
 class Pokeball;
 class Take;
 Pokemon *searchPokemonName(std::string name);
@@ -154,7 +153,7 @@ private:
     std::string type;
     int healthPoints;
     int maxHealthPoints;
-    int inPokeball; // 0 = not in pokeball, 1 = in pokeball
+    int inPokeball; // 0 = in pokeball, 1 = not in pokeball
     std::vector<Ability *> abilities;
     
 
@@ -172,7 +171,7 @@ public:
         }
 
         this->maxHealthPoints = healthPoints;
-        this->inPokeball = 0;
+        this->inPokeball = 1;
         pokemons.push_back(this);
     }
 
@@ -187,7 +186,7 @@ public:
     {
         std::cout << "Name: " << name << std::endl;
         std::cout << "Health Points: " << healthPoints << std::endl;
-        if (inPokeball == 0)
+        if (inPokeball == 1)
         {
             std::cout << "Pokemon out of Pokeball" << std::endl;
         }
@@ -562,6 +561,19 @@ public:
         }
         return pokeball;
     }
+
+    Pokeball operator,(Pokeball pokeball)
+    { // -a
+        if (pokeball.getPokeballValue() == 1)
+        {
+            pokemon->setInPokeball(1);
+        }
+        else
+        {
+            pokemon->setInPokeball(0);
+        }
+        return pokeball;
+    }
 };
 
 Pokemon *searchPokemonName(std::string name)
@@ -777,7 +789,7 @@ void duel()
 
     std::cout << "Attacker: " << pokemonsInGame.at(game->getAttackerIndex()) << std::endl;
     std::cout << "Defender: " << pokemonsInGame.at(game->getDefenderIndex()) << std::endl;
-        if (Pokemon1->getInPokeball() == 0)
+        if (Pokemon1->getInPokeball() == 1)
         {
             std::cout << Pokemon1->getName() << "(Player1) select ability:" << std::endl;
             ability = select_ability(Pokemon1);
@@ -793,12 +805,12 @@ void duel()
         Pokemon1->update();
         game->Switch();
         std::cout << "\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
-          std::cout << "Attacker: " << pokemonsInGame.at(game->getAttackerIndex()) << std::endl;
+        std::cout << "Attacker: " << pokemonsInGame.at(game->getAttackerIndex()) << std::endl;
     std::cout << "Defender: " << pokemonsInGame.at(game->getDefenderIndex()) << std::endl;
 
         if (Pokemon2->isAlive())
         {
-            if (Pokemon2->getInPokeball() == 0)
+            if (Pokemon2->getInPokeball() == 1)
             {
                 std::cout << Pokemon2->getName() << "(Player2) select ability:" << std::endl;
                 ability = select_ability(Pokemon2);
