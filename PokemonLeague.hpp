@@ -75,13 +75,13 @@ int flagAfter = 0;
         i++)                                                               \
     {                                                                       \
         if (flagAfter) {                                               \
-            class_action->actions.push_back(&(class_action->empty_action)); \
+            class_action->actions.push_back((class_action->empty_action)); \
         } else {                                                            \
-            class_action->actions.push_back(&(class_action->action));       \
+            class_action->actions.push_back((class_action->action));       \
         }                                                                   \
     }                                                                       \
     class_action->actions.pop_back();                                       \
-    class_action->actions.push_back(&(class_action->action));               \
+    class_action->actions.push_back((class_action->action));               \
     flagAfter = 0;                                                     \
     class_action->action = [](
 
