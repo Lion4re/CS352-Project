@@ -11,7 +11,7 @@ CREATE ABILITY{
             END
             END
 }CREATE ABILITY{
-    NAME : "Solar_Power",
+    NAME : "Solar",
     ACTION : START
         // Για 5 γύποςρ κάνει 8 damage στον αντίπαλο (DEFENDER)
         FOR 5 ROUNDS DO
@@ -33,15 +33,15 @@ CREATE ABILITY{
     HP : 100
 } CREATE POKEMON{
     NAME : "K",
-    TYPE : "Fire",
+    TYPE : "Grass",
     HP : 100
 }CREATE POKEMON{
     NAME : "P",
     TYPE : "Electric",
-    HP : 90
-} DEAR "C" LEARN[ABILITY_NAME(Bite) ABILITY_NAME(Solar_Power) ABILITY_NAME(Slash) ABILITY_NAME(Blaze)] DEAR "P" LEARN[ABILITY_NAME(Bite) ABILITY_NAME(Slash)
+    HP : 100
+} DEAR "C" LEARN[ABILITY_NAME(Bite) ABILITY_NAME(Solar) ABILITY_NAME(Slash) ABILITY_NAME(Blaze)] DEAR "P" LEARN[ABILITY_NAME(Bite) ABILITY_NAME(Slash)
                                                                                                                                         ABILITY_NAME(Electric_Shock)] 
- DEAR "K" LEARN[ABILITY_NAME(Bite) ABILITY_NAME(Slash)
+ DEAR "K" LEARN[ABILITY_NAME(Bite) ABILITY_NAME(Slash) ABILITY_NAME(Solar)
                                                                                                                                         ABILITY_NAME(Electric_Shock)]                                                                                                                                       
                                                                                                                                         DUEL
 END_GAME

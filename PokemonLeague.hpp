@@ -41,8 +41,8 @@ bool flagAfter = false;
 
 
 #define POKEBALL pokeball = 
-#define ATTACKER pokemonsInGame[game->getAttackerIndex()],
-#define DEFENDER pokemonsInGame[game->getDefenderIndex()],
+#define ATTACKER pokemonsInGame.at(game->getAttackerIndex()),
+#define DEFENDER pokemonsInGame.at(game->getDefenderIndex()),
 #define DAMAGE ; damage = 
 #define HEAL ; heal =
 #define START []() {

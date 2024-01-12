@@ -249,6 +249,7 @@ public:
     void heal(int heal)
     {
         healthPoints += heal;
+        std::cout << "Heal: " << heal << std::endl;
         if (healthPoints > maxHealthPoints)
         {
             healthPoints = maxHealthPoints;
@@ -271,6 +272,7 @@ public:
     {
         if (this->getType() == "Grass" && !check())
         {
+            std::cout << "Grass Type: Heal 5% of max health points" << std::endl;
             this->heal(static_cast<int>(this->getMaxHealthPoints() * 0.05f));
         }
 
@@ -377,60 +379,85 @@ public:
     int operator,(int damage)
     {
         setDamage(damage);
-        Pokemon *attacker = pokemonsInGame.at(game->getAttackerIndex());
+        
         //Pokemon *defender = pokemonsInGame[(game->getDefenderIndex())];
-        do_damage(pokemon, attacker);
+        do_damage(pokemon);
         return 0;
     }
 
-    void do_damage(Pokemon *defender, Pokemon *attacker)
-    {
-        float damageMultiplier = 1.0f;
+    void do_damage(Pokemon *defender)
+{
+    float damage = getDamage();
+    Pokemon *attacker = pokemonsInGame.at(game->getAttackerIndex());
+    std::cout << "type of attacker is " << attacker->getType() << "and the name is" << attacker->getName() << std::endl;
+    std::cout << "---------------------------------------------------------------------------------------------------------" << std::endl;
+    std::cout << "type of defender is " << defender->getType() << "and the name is" << defender->getName() << std::endl;
 
-        if (attacker->getType() == "Electric")
+    float increasedDamage;
+    float reducedDamage;
+
+    if (defender->getType() == "Electric")
+    {
+        if (attacker->getType() == "Fire")
         {
-            if (defender->getType() == "Fire")
-            {
-                damageMultiplier -= 0.30f;
-            }
-            else if (defender->getType() != "Electric")
-            {
-                damageMultiplier -= 0.20f;
-            }
+            reducedDamage = damage * 0.30f;
+            //damage -= reducedDamage;
+            std::cout << "Fire vs Electric: Damage reduced by " << reducedDamage << std::endl;
         }
-        else if (attacker->getType() == "Fire")
+        else if (attacker->getType() != "Fire")
         {
-            if (defender->getType() == "Electric")
-            {
-                damageMultiplier += 0.20f;
-            }
-            else if (defender->getType() != "Fire")
-            {
-                damageMultiplier += 0.15f;
-            }
+            reducedDamage = damage * 0.20f;
+            //damage -= reducedDamage;
+            std::cout << "Non-Fire vs Electric: Damage reduced by " << reducedDamage << std::endl;
         }
-        else if (attacker->getType() == "Water")
-        {
-            damageMultiplier += 0.07f;
-            attacker->receiveDamage(static_cast<int>(getDamage() * (-0.07f)));
-        }
-        else if (attacker->getType() == "Grass")
-        {
-            if (check())
-            {
-                damageMultiplier += 0.07f;
-            }
-        }
-        std::cout << "Damage multiplier: " << damageMultiplier << std::endl;
-        std::cout << "Damage: " << getDamage() << std::endl;
-        int finalDamage = static_cast<int>(getDamage() + (damageMultiplier * getDamage()));
-        std::cout << "Final damage: " << finalDamage << std::endl;
-        defender->receiveDamage(finalDamage);
     }
+    if (attacker->getType() == "Fire")
+    {
+        if (defender->getType() == "Electric")
+        {
+            increasedDamage = damage * 0.20f;
+            //damage += increasedDamage;
+            std::cout << "Fire vs Electric: Damage increased by " << increasedDamage << std::endl;
+        }
+        else if (defender->getType() != "Electric")
+        {
+            increasedDamage = damage * 0.15f;
+            //damage += increasedDamage;
+            std::cout << "Fire vs Non-Electric: Damage increased by " << increasedDamage << std::endl;
+        }
+    }
+    if (attacker->getType() == "Water")
+    {
+        increasedDamage = damage * 0.07f;
+        //damage += increasedDamage;
+        std::cout << "Water Type: Damage increased by " << increasedDamage << std::endl;
+    }
+    if (attacker->getType() == "Grass")
+    {
+        if (check())
+        {
+            increasedDamage = damage * 0.07f;
+            //damage += increasedDamage;
+            std::cout << "Grass Type with Check: Damage increased by " << increasedDamage << std::endl;
+        }
+    }
+
+    if(defender->getType() == "Water"){
+        reducedDamage = damage * 0.07f;
+        //damage -= reducedDamage;
+        std::cout << "Defender Water Type: Damage reduced by " << reducedDamage << std::endl;
+    }
+
+    std::cout << "Damage: " << getDamage() << std::endl;
+    damage = damage + increasedDamage - reducedDamage;
+    std::cout << "Final damage: " << damage << std::endl;
+    defender->receiveDamage(damage);
+}
+
 
     bool check()
     {
-        if (game->getRound() % 3 == 0)
+        if (game->getRound() % 2 == 1)
         { // perritos
             return true;
         }
@@ -743,6 +770,9 @@ void duel()
     std::cout << "\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
     std::cout << "Round: " << game->getRound() << std::endl;
     std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" << std::endl;
+
+    std::cout << "Attacker: " << pokemonsInGame.at(game->getAttackerIndex()) << std::endl;
+    std::cout << "Defender: " << pokemonsInGame.at(game->getDefenderIndex()) << std::endl;
         if (Pokemon1->getInPokeball() == 0)
         {
             std::cout << Pokemon1->getName() << "(Player1) select ability:" << std::endl;
@@ -758,6 +788,9 @@ void duel()
 
         Pokemon1->update();
         game->Switch();
+        std::cout << "\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+          std::cout << "Attacker: " << pokemonsInGame.at(game->getAttackerIndex()) << std::endl;
+    std::cout << "Defender: " << pokemonsInGame.at(game->getDefenderIndex()) << std::endl;
 
         if (Pokemon2->isAlive())
         {
