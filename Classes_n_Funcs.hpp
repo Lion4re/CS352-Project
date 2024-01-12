@@ -376,13 +376,14 @@ public:
 
     int operator,(int damage)
     {
+        setDamage(damage);
         Pokemon *attacker = pokemonsInGame.at(game->getAttackerIndex());
         //Pokemon *defender = pokemonsInGame[(game->getDefenderIndex())];
-        do_damage(pokemon, attacker, damage);
+        do_damage(pokemon, attacker);
         return 0;
     }
 
-    void do_damage(Pokemon *defender, Pokemon *attacker, float damage)
+    void do_damage(Pokemon *defender, Pokemon *attacker)
     {
         float damageMultiplier = 1.0f;
 
@@ -420,8 +421,10 @@ public:
                 damageMultiplier += 0.07f;
             }
         }
-
-        int finalDamage = static_cast<int>(getDamage() * damageMultiplier);
+        std::cout << "Damage multiplier: " << damageMultiplier << std::endl;
+        std::cout << "Damage: " << getDamage() << std::endl;
+        int finalDamage = static_cast<int>(getDamage() + (damageMultiplier * getDamage()));
+        std::cout << "Final damage: " << finalDamage << std::endl;
         defender->receiveDamage(finalDamage);
     }
 
@@ -737,8 +740,6 @@ void duel()
     Ability *ability;
     while (Pokemon1->isAlive() && Pokemon2->isAlive())
     {
-        Pokemon1->print();
-            Pokemon2->print();
     std::cout << "\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
     std::cout << "Round: " << game->getRound() << std::endl;
     std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" << std::endl;
