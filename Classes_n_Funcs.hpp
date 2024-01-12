@@ -364,11 +364,11 @@ public:
     {
         Pokemon *attacker = pokemonsInGame[(game->getAttackerIndex())];
         Pokemon *defender = pokemonsInGame[(game->getDefenderIndex())];
-        do_damage(defender, attacker, damage);
+        do_damage(pokemon, attacker, damage);
         return 0;
     }
 
-    void do_damage(Pokemon *defender, Pokemon *attacker, int damage)
+    void do_damage(Pokemon *defender, Pokemon *attacker, float damage)
     {
         float damageMultiplier = 1.0f;
 

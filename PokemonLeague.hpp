@@ -68,16 +68,20 @@ LastMacroUsed last_macro_used = NONE;
     pokemonsInGame[game->getAttackerIndex()]->pokemonactions.push_back(class_action); \
     for(int i = 0; i < 
 
-#define ROUNDS ; i++) { \
-    if(last_macro_used == AFTER_MACRO){ \
-        class_action->actions.push_back(class_action->action); \
-    }else if(last_macro_used == FOR_MACRO){ \
-        class_action->actions.push_back(class_action->action); \
-    }                                               \
-    last_macro_used = NONE; \
+#define ROUNDS                                                              \
+    ;                                                                       \
+        i++)                                                               \
+    {                                                                       \
+        if (flagAfter) {                                               \
+            class_action->actions.push_back((class_action->empty_action)); \
+        } else {                                                            \
+            class_action->actions.push_back((class_action->action));       \
+        }                                                                   \
+    }                                                                       \
     class_action->actions.pop_back();                                       \
-    class_action->actions.push_back(class_action->action);               \
-    class_action->action = [](  
+    class_action->actions.push_back((class_action->action));               \
+    flagAfter = 0;                                                     \
+    class_action->action = [](
 
 #define AFTER ; \
     last_macro_used = AFTER_MACRO; \
