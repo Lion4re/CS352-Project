@@ -23,7 +23,6 @@ class Heal;
 class Pokeball;
 class Take;
 Pokemon *searchPokemonName(std::string name);
-
 std::vector<void (*)()> actions;
 std::vector<Pokemon *> pokemons;
 std::vector<Ability *> abilities;
