@@ -3,11 +3,10 @@
 Heal heal;
 Damage damage;
 Take pokeball;
-Actions *class_action = new Actions();
+Actions *effects = new Actions();
 
 enum LastMacroUsed { NONE, FOR_MACRO, AFTER_MACRO };
 LastMacroUsed last_macro_used = NONE;
-bool flagAfter = false;
 
 
 #define BEGIN_GAME     \
@@ -66,29 +65,25 @@ bool flagAfter = false;
 
 #define FOR ; \
     last_macro_used = FOR_MACRO; \
-    class_action = new Actions(); \
-    pokemonsInGame.at(game->getAttackerIndex())->pokemonactions.push_back(class_action); \
+    effects = new Actions(); \
+    pokemonsInGame.at(game->getAttackerIndex())->pokemonactions.push_back(effects); \
     for(int i = 0; i < 
 
 #define ROUNDS                                                              \
     ;                                                                       \
         i++)                                                               \
-    {                                                                       \
-        if (last_macro_used != AFTER_MACRO) {    \
-            class_action->actions.push_back(&(class_action->action));   \
-        } else {                                                            \
-            class_action->actions.push_back(&(class_action->empty_action));    \
-        }                                                                   \
-    }                                                                       \
-    class_action->actions.pop_back();                                       \
-    class_action->actions.push_back(&(class_action->action));               \
-    last_macro_used = NONE;                                                   \
-    class_action->action = [](
+    {\
+        auto actionToPush = (last_macro_used != AFTER_MACRO) ? &(effects->action) : &(effects->empty_action); \
+        effects->actions.push_back(actionToPush); \
+    }  effects->actions.pop_back(); \
+        effects->actions.push_back(&(effects->action)); \
+        last_macro_used = NONE; \
+    effects->action = [](
 
 #define AFTER ; \
     last_macro_used = AFTER_MACRO; \
-    class_action = new Actions(); \
-    pokemonsInGame.at(game->getAttackerIndex())->pokemonactions.push_back(class_action); \
+    effects = new Actions(); \
+    pokemonsInGame.at(game->getAttackerIndex())->pokemonactions.push_back(effects); \
     for(int i = 0; i <=
 
 
