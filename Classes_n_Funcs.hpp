@@ -691,9 +691,9 @@ void duel()
     Ability *ability;
     while (Pokemon1->isAlive() && Pokemon2->isAlive())
     {
-        std::cout << "\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
-        std::cout << "Round: " << game->getRound() << std::endl;
-        std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" << std::endl;
+        std::cout << "\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
+                  << "Round: " << game->getRound() << "\n"
+                  << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n";
 #ifdef DEBUG
         std::cout << "Attacker: " << pokemonsInGame.at(game->getAttackerIndex()) << std::endl;
         std::cout << "Defender: " << pokemonsInGame.at(game->getDefenderIndex()) << std::endl;
