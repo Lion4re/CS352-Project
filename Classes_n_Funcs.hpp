@@ -755,4 +755,20 @@ void duel()
         std::cout << "\n=== RIP -> (Player1)" << Name1 << "\n"
                   << Name2 << "(Player2) Wins!!!" << std::endl;
     }
+    std::cout << "\n\n Do you want to play again? (y/n)" << std::endl;
+    std::string answer;
+    std::getline(std::cin, answer);
+    if (answer == "y" || answer == "Y" || answer == "yes" || answer == "YES" || answer == "Yes")
+    {
+        pokemonsInGame.clear();
+        game = new Round();
+        duel();
+    }
+    else
+    {
+        std::cout << "Goodbye!" << std::endl;
+        std::cout << "\n-------------------------POKEMON_THE_GAME-------------------------" << std::endl;
+        std::cout <<  "------------------------------THE_END-------------------------" << std::endl;
+        std::cout << "Credits to Davanos Ioannis and Papageridis Vasileios\n\n" << std::endl;
+    }
 }
