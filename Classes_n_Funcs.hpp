@@ -275,11 +275,6 @@ public:
 
 Pokemon *learner = new Pokemon;
 
-std::ostream &operator<<(std::ostream &os, Pokemon *pokemon_temp)
-{
-    os << pokemon_temp->getName();
-    return os;
-}
 
 class Pokemons
 {
@@ -478,11 +473,16 @@ class Pokeball
 
 public:
     Pokeball() {}
-    Pokeball(int val) : pokeball_value(val)
+    ~Pokeball() {}
+    Pokeball(int val) : pokeball_value(val) {}
+    int getPokeballValue()
     {
+        return pokeball_value;
     }
-    ~Pokeball()
+
+    void setPokeballValue(int val)
     {
+        pokeball_value = val;
     }
 
     Pokeball *operator--()
@@ -494,11 +494,6 @@ public:
     {
         Pokeball a(1);
         return a;
-    }
-
-    int getPokeballValue()
-    {
-        return pokeball_value;
     }
 };
 
@@ -669,9 +664,9 @@ int pokemon_to_learn(Pokemon *pokemon, std::string ability_)
             if (ability->getAbilityName() == ability_)
             {
                 pokemon->addAbility(ability);
-                #ifdef DEBUG
+#ifdef DEBUG
                 std::cout << ability->getAbilityName() << std::endl;
-                #endif
+#endif
                 return 0;
             }
         }
@@ -696,10 +691,9 @@ void duel()
     Ability *ability;
     while (Pokemon1->isAlive() && Pokemon2->isAlive())
     {
-        std::cout << "\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
+        std::cout << "\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << std::endl;
         std::cout << "Round: " << game->getRound() << std::endl;
-        std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
-                  << std::endl;
+        std::cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" << std::endl;
 #ifdef DEBUG
         std::cout << "Attacker: " << pokemonsInGame.at(game->getAttackerIndex()) << std::endl;
         std::cout << "Defender: " << pokemonsInGame.at(game->getDefenderIndex()) << std::endl;
