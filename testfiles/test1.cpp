@@ -1,4 +1,4 @@
-#include "PokemonLeague.hpp"
+#include "../src/PokemonLeague.hpp"
 BEGIN_GAME
 CREATE ABILITY{
     NAME : "Bite",
