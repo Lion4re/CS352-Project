@@ -567,6 +567,11 @@ void select_ability(Pokemon *pokemon, Ability *ability)
 {
     std::string abilty_name;
     std::cout << "-----------------------" << std::endl;
+    if(pokemon->getAbilities().empty())
+    {
+        std::string errorMessage = pokemon->getName() + " has no abilities";
+        throw std::runtime_error(errorMessage);
+    }
     for (const auto &ability : pokemon->getAbilities())
     {
         std::cout << ability->getAbilityName() << std::endl;
