@@ -5,7 +5,7 @@ CXX = g++
 CXXFLAGS =  -g
 
 # Executable name
-TARGET = my_program
+TARGET = pokemon_battle
 
 # Object files
 OBJS = main.o classes_n_funcs.o
