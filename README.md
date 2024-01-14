@@ -2,7 +2,7 @@
 
 Domain-Specific Language (DSL) Project for the course CS-352: Software Engineering, University of Crete, Department of Computer Science, 2023-2024. <br>
 This project is a Pokémon battle simulator, where the player can choose a team of Pokémon and battle against the Pokémon League.<br>
-The game is written in C++14 (version 201402).
+The game is written in C++14 (version 201402) and the text-editor used is Visual Studio Code.
 
 ## Team Members
 - Davanos Ioannis (4622)

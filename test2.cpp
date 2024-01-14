@@ -16,5 +16,8 @@ CREATE POKEMONS [ POKEMON{ NAME: "Ho Oh", TYPE: "Fire", HP: 120 }, POKEMON{ NAME
 
 DEAR "Pikachu" LEARN [ ABILITY_NAME(Electric_Shock) ABILITY_NAME(Lightning_Rod) ]
 DEAR "Ho Oh" LEARN [ ABILITY_NAME(Electric_Shock) ABILITY_NAME(Blaze) ABILITY_NAME(Lightning_Rod) ABILITY_NAME(Drought) ]
+DEAR "Squirtle" LEARN [ ABILITY_NAME(Electric_Shock) ABILITY_NAME(Solar_Power) ABILITY_NAME(Lightning_Rod) ]
+DEAR "Bulbasaur" LEARN [ ABILITY_NAME(Electric_Shock) ABILITY_NAME(Solar_Power) ABILITY_NAME(Drought) ]
+DEAR "Ho Oh" LEARN [ ABILITY_NAME(Electric_Shock) ABILITY_NAME(Blaze) ABILITY_NAME(Lightning_Rod) ABILITY_NAME(Drought) ]
 DUEL
 END_GAME
